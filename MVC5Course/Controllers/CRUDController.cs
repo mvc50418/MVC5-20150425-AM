@@ -26,7 +26,7 @@ namespace MVC5Course.Controllers
             //Product p = db.Product.Find(id);
             //Product p = db.Product.Where(x => x.ProductId == id);
             Product p = db.Product.First(x => x.ProductId == id);
-
+            
             return View(p);
         }
 
@@ -107,7 +107,34 @@ namespace MVC5Course.Controllers
         // GET: CRUD/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var client = db.Client.Find(id);
+
+            //var orders = db.Order.Where(p => p.ClientId == id);
+            //var orders = client.Order.ToList();
+
+            //foreach (var item in orders)
+            //{
+            //    db.Order.Remove(item);
+            //}
+
+            //db.Order.RemoveRange(orders);
+
+            //db.Order.RemoveRange(client.Order.ToList());
+
+
+            foreach (var order in client.Order.ToList())
+            {
+                db.OrderLine.RemoveRange(order.OrderLine);
+            }
+
+            db.Order.RemoveRange(client.Order.ToList());
+
+            db.Client.Remove(client);
+
+            db.SaveChanges();
+
+
+            return RedirectToAction("Index", "Clients");
         }
 
         // POST: CRUD/Delete/5
