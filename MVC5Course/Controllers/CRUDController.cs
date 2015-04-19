@@ -24,11 +24,9 @@ namespace MVC5Course.Controllers
 
             //data = data.Take(limit);
 
-            var data = db.Database.SqlQuery<Product>("SELECT TOP " + limit + " * FROM dbo.Product WHERE ProductName like @p0", keyword + "%").AsQueryable();
+            //var data = db.Database.SqlQuery<Product>("SELECT TOP " + limit + " * FROM dbo.Product WHERE ProductName like @p0", keyword + "%").AsQueryable();
 
-
-            //db.QueryProduct().AsQueryable();
-
+            var data = db.QueryProduct().AsQueryable();
 
             ViewBag.keyword = keyword;
 

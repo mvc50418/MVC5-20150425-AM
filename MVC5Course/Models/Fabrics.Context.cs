@@ -33,9 +33,14 @@ namespace MVC5Course.Models
         public virtual DbSet<OrderLine> OrderLine { get; set; }
         public virtual DbSet<Product> Product { get; set; }
     
-        public virtual ObjectResult<QueryProduct_Result> QueryProduct()
+        public virtual ObjectResult<Product> QueryProduct()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<QueryProduct_Result>("QueryProduct");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Product>("QueryProduct");
+        }
+    
+        public virtual ObjectResult<Product> QueryProduct(MergeOption mergeOption)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Product>("QueryProduct", mergeOption);
         }
     }
 }

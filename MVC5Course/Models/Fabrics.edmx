@@ -275,7 +275,7 @@
             <End Role="Product" EntitySet="Product" />
             <End Role="OrderLine" EntitySet="OrderLine" />
           </AssociationSet>
-          <FunctionImport Name="QueryProduct" ReturnType="Collection(FabricsModel.QueryProduct_Result)" />
+          <FunctionImport Name="QueryProduct" EntitySet="Product" ReturnType="Collection(FabricsModel.Product)" />
         </EntityContainer>
         <ComplexType Name="QueryProduct_Result">
           <Property Type="Int32" Name="ProductId" Nullable="false" />
@@ -353,15 +353,6 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="QueryProduct" FunctionName="FabricsModel.Store.QueryProduct">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="FabricsModel.QueryProduct_Result">
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="Stock" ColumnName="Stock" />
-              </ComplexTypeMapping>
-            </ResultMapping>
           </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
