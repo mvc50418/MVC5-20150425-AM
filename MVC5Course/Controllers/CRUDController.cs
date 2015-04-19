@@ -4,16 +4,17 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MVC5Course.Models;
+using System.Data.Entity.Validation;
 
 namespace MVC5Course.Controllers
 {
     public class CRUDController : Controller
     {
+        FabricsEntities db = new FabricsEntities();
+
         // GET: CRUD
         public ActionResult Index()
         {
-            var db = new FabricsEntities();
-
             var data = db.Product.Where(p => p.ProductName.StartsWith("C"));
 
             return View(data);
@@ -22,7 +23,11 @@ namespace MVC5Course.Controllers
         // GET: CRUD/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            //Product p = db.Product.Find(id);
+            //Product p = db.Product.Where(x => x.ProductId == id);
+            Product p = db.Product.First(x => x.ProductId == id);
+
+            return View(p);
         }
 
         // GET: CRUD/Create
@@ -37,7 +42,15 @@ namespace MVC5Course.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+                Product prod = new Product();
+
+                prod.ProductName = collection["ProductName"];
+                prod.Price = Convert.ToDecimal(collection["Price"]);
+                prod.Stock = Convert.ToDecimal(collection["Stock"]);
+                prod.Active = true;
+
+                db.Product.Add(prod);
+                db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -46,6 +59,28 @@ namespace MVC5Course.Controllers
                 return View();
             }
         }
+
+        public ActionResult BatchUpdate()
+        {
+            var data = db.Product.Where(p => p.ProductName.StartsWith("C"));
+
+            foreach (var item in data)
+            {
+                item.Price = item.Price * 2;
+            }
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                throw ex;
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
         // GET: CRUD/Edit/5
         public ActionResult Edit(int id)
